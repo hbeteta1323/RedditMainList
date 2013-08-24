@@ -1,22 +1,56 @@
 package com.sample.redditapp;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
+import java.util.List;
 
-public class RedditMainList extends Activity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.os.Bundle;
+import android.util.Log;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+public class RedditMainList extends SherlockFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_reddit_main_list);
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.reddit_main_list, menu);
-		return true;
-	}
+		RequestQueue queue = Volley.newRequestQueue(this);
 
+		String url = "http://www.reddit.com/r/funny:/.json";
+
+		JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+				url, null, new Response.Listener<JSONObject>() {
+
+					@Override
+					public void onResponse(JSONObject response) {
+						// TODO Auto-generated method stub
+						try {
+							List<RedditItem> list = Processor.process(response);
+							Log.d("DEBUG","list:"+list);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+		queue.add(request);
+		
+	}
 }
