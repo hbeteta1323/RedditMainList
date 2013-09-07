@@ -2,12 +2,12 @@ package com.sample.redditapp;
 
 public class RedditItem {
 	public String author;
-	public String thumbail;
+	public String thumbnail;
 	public String title;
 	
 	@Override
 	public String toString() {
-		return "RedditItem [author=" + author + ", thumbail=" + thumbail
+		return "RedditItem [author=" + author + ", thumbail=" + thumbnail
 				+ ", title=" + title + "]";
 	}
 }

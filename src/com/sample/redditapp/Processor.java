@@ -11,7 +11,7 @@ public class Processor {
 
 	public static List<RedditItem> process(JSONObject response) throws JSONException {
 		// TODO Auto-generated method stub
-		JSONArray children = response.getJSONObject("data").getJSONArray("Children");
+		JSONArray children = response.getJSONObject("data").getJSONArray("children");
 		
 		List<RedditItem> items = new ArrayList<RedditItem>();
 		for(int i = 0; i <children.length(); i++)
@@ -20,7 +20,7 @@ public class Processor {
 			RedditItem item = new RedditItem();
 			item.author=data.getString("author");
 			item.title=data.getString("title");
-			item.thumbail=data.getString("thumbail");
+			item.thumbnail=data.getString("thumbnail");
 			items.add(item);
 		}
 		

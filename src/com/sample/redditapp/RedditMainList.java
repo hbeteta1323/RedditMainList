@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.android.volley.Request;
@@ -17,15 +18,21 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 public class RedditMainList extends SherlockFragmentActivity {
-
+	private RedditItemAdapter adapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_reddit_main_list);
 
+		ListView list = (ListView) findViewById(R.id.list);
+		
+		adapter = new RedditItemAdapter(this);
+		
+		list.setAdapter(adapter);
+		
 		RequestQueue queue = Volley.newRequestQueue(this);
 
-		String url = "http://www.reddit.com/r/funny:/.json";
+		String url = "http://www.reddit.com/r/funny/.json";
 
 		JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
 				url, null, new Response.Listener<JSONObject>() {
@@ -34,8 +41,9 @@ public class RedditMainList extends SherlockFragmentActivity {
 					public void onResponse(JSONObject response) {
 						// TODO Auto-generated method stub
 						try {
-							List<RedditItem> list = Processor.process(response);
-							Log.d("DEBUG","list:"+list);
+							List<RedditItem> items = Processor.process(response);
+							adapter.setItems(items);
+							Log.d("DEBUG","list:"+items);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

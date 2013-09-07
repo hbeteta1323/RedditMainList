@@ -10,9 +10,9 @@
     tools:context=".RedditMainList" >
 
     <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@+id/list"
         tools:listitem="@android:layout/simple_list_item_1" />
 
 </RelativeLayout>
