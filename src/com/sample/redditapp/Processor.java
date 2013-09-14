@@ -7,9 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+
 public class Processor {
 
-	public static List<RedditItem> process(JSONObject response) throws JSONException {
+	public static List<RedditItem> process(Context context, JSONObject response) throws JSONException {
 		// TODO Auto-generated method stub
 		JSONArray children = response.getJSONObject("data").getJSONArray("children");
 		
@@ -22,6 +24,8 @@ public class Processor {
 			item.title=data.getString("title");
 			item.thumbnail=data.getString("thumbnail");
 			items.add(item);
+			
+			ItemDbManager.instance(context).save(item);
 		}
 		
 		return items;

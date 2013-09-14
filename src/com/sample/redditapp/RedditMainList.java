@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.android.volley.Request;
@@ -41,7 +42,7 @@ public class RedditMainList extends SherlockFragmentActivity {
 					public void onResponse(JSONObject response) {
 						// TODO Auto-generated method stub
 						try {
-							List<RedditItem> items = Processor.process(response);
+							List<RedditItem> items = Processor.process(getBaseContext(), response);
 							adapter.setItems(items);
 							Log.d("DEBUG","list:"+items);
 						} catch (JSONException e) {
@@ -55,7 +56,14 @@ public class RedditMainList extends SherlockFragmentActivity {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						// TODO Auto-generated method stub
-						
+						Log.d("HBC - Error",
+								"This error happpened: "
+								+ error.getLocalizedMessage());
+						Toast.makeText(RedditMainList.this, 
+								"Error happened", 
+								Toast.LENGTH_LONG).show();
+						List<RedditItem> items = ItemDbManager.instance(getBaseContext()).loadCachedData();
+						adapter.setItems(items);
 					}
 				});
 		queue.add(request);
